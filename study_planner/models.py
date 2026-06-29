@@ -25,6 +25,14 @@ class Task:
             done = bool(data.get("done", False))
         )
 
+    def to_dict(self) -> dict:
+        return {
+            "title": self.title, 
+            "deadline": format_deadline(self.deadline),
+            "priority": self.priority,
+            "done": self.done
+        }
+
     def validate(self) -> None:
         if not self.title:
             raise ValueError("Введите название задачи")
