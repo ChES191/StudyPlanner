@@ -49,3 +49,14 @@ class StudyPlannerApp:
             state="readonly",
             width=18
         ).grid(row=2, column=1, padx=(0,8), pady=4, sticky="w")
+
+        buttons = ttk.Frame(form)
+        buttons.grid(row=3, column=1, pady=(8,0), sticky="w")
+        ttk.Button(buttons, text="Добавить задачу", command=...).grid(row=0, column=0, padx=(0,8))
+        ttk.Button(buttons, text="Очистить", command=self._clear_form).grid(row=0, column=1)
+
+
+    def _clear_form(self) -> None:
+        self.title_var.set("")
+        self.deadline_var.set("")
+        self.priority_var.set(PRIORITIES[1])
