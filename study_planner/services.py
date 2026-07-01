@@ -40,4 +40,6 @@ class TaskService:
         done_count = sum(task.done for task in self.tasks)
         return len(self.tasks), done_count
 
-        
+    def reset_tasks(self) -> None:
+         self.tasks.clear()
+         self.save()

@@ -90,7 +90,7 @@ class StudyPlannerApp:
         ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
         ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
         ttk.Button(actions, text="Сохранить", command=self._save_tasks).grid(row=0, column=2, padx=(0,8))
-        ttk.Button(actions, text="Сбросить все", command=...).grid(row=0, column=3, padx=(0,8))
+        ttk.Button(actions, text="Сбросить все", command=self._reset_tasks).grid(row=0, column=3, padx=(0,8))
 
         footer = ttk.Frame(self.root, padding=(12,6,12,12))
         footer.grid(row=3, column=0, sticky="ew")
@@ -113,6 +113,7 @@ class StudyPlannerApp:
             return 
 
         self._clear_form()
+        self._refresh_tasks()
 
 
     def _save_tasks(self) -> None: 
@@ -121,7 +122,8 @@ class StudyPlannerApp:
 
 
     def _refresh_tasks(self) -> None:
-
+        self.listbox.delete(0, tk.END)
+        self.visible_indexes.clear()
 
         for visible_position, (task_index, task) in enumerate(self.service.get_tasks(self.filter_var.get())):
             self.visible_indexes.append(task_index)
@@ -146,3 +148,13 @@ class StudyPlannerApp:
 
 
         self.listbox.itemconfig(visible_position, foreground=colors.get(priority, "#000000"))
+
+    def _reset_tasks(self) -> None:
+        if not self.service.tasks:
+            return
+        
+        confirmed = messagebox.askyesno("Подтверждение", "Удалить все задачи?")
+        if not confirmed:
+            return
+        
+        self.service.reset_tasks()
