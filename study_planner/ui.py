@@ -158,3 +158,4 @@ class StudyPlannerApp:
             return
         
         self.service.reset_tasks()
+        self._refresh_tasks()
