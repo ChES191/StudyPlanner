@@ -25,4 +25,15 @@ class TaskService:
 
     def save(self) -> None: 
         self.repository.save(self.tasks)
+
+
+    def get_tasks(self, filter_name: str = FILTERS[0]) -> list[tuple[int, Task]]:
+        if filter_name == FILTERS[1]:
+            return [(index, task) for index, task in enumerate(self.tasks) if not task.done]
+
+        if filter_name == FILTERS[2]:
+                    return [(index, task) for index, task in enumerate(self.tasks) if task.done]
+
+        return list(enumerate(self.tasks))
+
         

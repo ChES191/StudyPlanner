@@ -14,6 +14,8 @@ class StudyPlannerApp:
         repository = JsonTaskRepository(TASKS_FILE)
         self.service = TaskService(repository)
 
+        self.visible_indexes: list[int] = []
+
         self.title_var= tk.StringVar()
         self.deadline_var = tk.StringVar()
         self.priority_var = tk.StringVar(value=PRIORITIES[1])
@@ -21,6 +23,7 @@ class StudyPlannerApp:
         self.stats_var = tk.StringVar()
 
         self._build_ui()
+        self._refresh_tasks()
 
     def run(self) -> None:
         self.root.mainloop()
@@ -86,7 +89,7 @@ class StudyPlannerApp:
 
         ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
         ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
-        ttk.Button(actions, text="Сохранить", command=...).grid(row=0, column=2, padx=(0,8))
+        ttk.Button(actions, text="Сохранить", command=self._save_tasks).grid(row=0, column=2, padx=(0,8))
         ttk.Button(actions, text="Сбросить все", command=...).grid(row=0, column=3, padx=(0,8))
 
         footer = ttk.Frame(self.root, padding=(12,6,12,12))
@@ -110,4 +113,20 @@ class StudyPlannerApp:
             return 
 
         self._clear_form()
+
+
+    def _save_tasks(self) -> None: 
+        self.service.save()
+        messagebox.showinfo("Сохранение", "Задачи сохранены в tasks.json")
+
+
+    def _refresh_tasks(self) -> None:
+
+
+        for visible_position, (task_index, task) in enumerate(self.service.get_tasks(self.filter_var.get())):
+            self.visible_indexes.append(task_index)
+            self.listbox.insert(tk.END, task)
+
+
+            
 
