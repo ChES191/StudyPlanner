@@ -58,6 +58,7 @@ class StudyPlannerApp:
         content = ttk.LabelFrame(self.root, text="Список задач", padding=12)
         content.grid(row=1, column=0, padx=12, pady=6, sticky="nsew")
         content.rowconfigure(1, weight=1)   
+        content.columnconfigure(0, weight=1)
 
         filter_row = ttk.Frame(content)
         filter_row.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0,8))
@@ -80,7 +81,7 @@ class StudyPlannerApp:
         self.listbox.configure(yscrollcommand=scrollbar.set)
 
         actions = ttk.Frame(self.root, padding=(12,6))
-        actions.grid(row=0, column=0, sticky="ew")
+        actions.grid(row=2, column=0, sticky="ew")
 
         ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
         ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
@@ -95,4 +96,7 @@ class StudyPlannerApp:
         self.title_var.set("")
         self.deadline_var.set("")
         self.priority_var.set(PRIORITIES[1])
+
+    def _add_task(self) -> None:
+        ...
 
