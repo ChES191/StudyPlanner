@@ -55,8 +55,44 @@ class StudyPlannerApp:
         ttk.Button(buttons, text="Добавить задачу", command=...).grid(row=0, column=0, padx=(0,8))
         ttk.Button(buttons, text="Очистить", command=self._clear_form).grid(row=0, column=1)
 
+        content = ttk.LabelFrame(self.root, text="Список задач", padding=12)
+        content.grid(row=1, column=0, padx=12, pady=6, sticky="nsew")
+        content.rowconfigure(1, weight=1)   
+
+        filter_row = ttk.Frame(content)
+        filter_row.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0,8))
+
+        ttk.Label(filter_row, text="Фильтр: ").grid(row=0, column=0, padx=(0,8), sticky="w")
+        filter_box = ttk.Combobox(
+            filter_row,
+            textvariable=self.filter_var,
+            values=FILTERS, 
+            state="readonly",
+            width=18
+        )
+        filter_box.grid(row=0, column=1, sticky="w")
+
+        self.listbox = tk.Listbox(content, height=12, activestyle="dotbox")
+        self.listbox.grid(row=1, column=0, sticky="nsew")
+
+        scrollbar = ttk.Scrollbar(content, orient="vertical", command=self.listbox.yview)
+        scrollbar.grid(row=1, column=1, sticky="ns")
+        self.listbox.configure(yscrollcommand=scrollbar.set)
+
+        actions = ttk.Frame(self.root, padding=(12,6))
+        actions.grid(row=0, column=0, sticky="ew")
+
+        ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
+        ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
+        ttk.Button(actions, text="Сохранить", command=...).grid(row=0, column=2, padx=(0,8))
+        ttk.Button(actions, text="Сбросить все", command=...).grid(row=0, column=3, padx=(0,8))
+
+        footer = ttk.Frame(self.root, padding=(12,6,12,12))
+        footer.grid(row=3, column=0, sticky="ew")
+        ttk.Label(footer, textvariable=self.stats_var).grid(row=0, column=0, sticky="w")
 
     def _clear_form(self) -> None:
         self.title_var.set("")
         self.deadline_var.set("")
         self.priority_var.set(PRIORITIES[1])
+
